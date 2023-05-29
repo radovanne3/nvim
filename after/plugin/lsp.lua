@@ -10,7 +10,8 @@ lsp.ensure_installed({
   "lua_ls",
   "jsonls",
   "html",
-  "cssls"
+  "cssls",
+  "clojure_lsp"
 })
 
 -- Fix Undefined global 'vim'

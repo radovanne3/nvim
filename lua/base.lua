@@ -29,3 +29,5 @@ opt.isfname:append("@-@")
 opt.updatetime = 50
 
 opt.cursorline = true
+
+opt.splitright = true
