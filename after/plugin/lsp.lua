@@ -5,7 +5,7 @@ lsp.preset("recommended")
 lsp.ensure_installed({
 	"tsserver",
 	"rust_analyzer",
-	"pylsp",
+	"pyright",
 	"lua_ls",
 	"jsonls",
 	"html",
@@ -49,8 +49,6 @@ lsp.set_preferences({
 	},
 })
 
-local mason_null_lsp = require("mason-null-ls")
-
 lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false, silent = true }
 
@@ -69,7 +67,7 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
 	vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 	vim.keymap.set({ "n", "t" }, "<M-d>", "<cmd>Lspsaga term_toggle<CR>", opts)
-	-- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+	vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
 	vim.keymap.set("n", "<C-s>", "<cmd>:w<CR>", opts)
 
 	-- LSP defaults
@@ -85,12 +83,9 @@ lsp.on_attach(function(client, bufnr)
 	-- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 	-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 end)
+
 lsp.setup()
 
 vim.diagnostic.config({
 	virtual_text = true,
-})
-
-mason_null_lsp.setup({
-	automatic_setup = true,
 })
