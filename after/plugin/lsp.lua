@@ -1,3 +1,4 @@
+-- customize diagnostic message
 local config = {
 	virtual_text = true,
 	update_in_insert = true,
@@ -14,6 +15,7 @@ local config = {
 }
 
 vim.diagnostic.config(config)
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
@@ -24,15 +26,8 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 --
--- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
+-- LSP
 local on_attach = function(client, bufnr)
-	-- NOTE: Remember that lua is a real programming language, and as such it is possible
-	-- to define small helper and utility functions so you don't have to repeat yourself
-	-- many times.
-	--
-	-- In this case, we create a function that lets us more easily define mappings specific
-	-- for LSP related items. It sets the mode, buffer and description for us each time.
 	local nmap = function(keys, func, desc)
 		if desc then
 			desc = "LSP: " .. desc
@@ -51,11 +46,9 @@ local on_attach = function(client, bufnr)
 	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 	nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
-	-- See `:help K` for why this keymap
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 	nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-	-- Lesser used LSP functionality
 	nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 	nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
 	nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
@@ -63,7 +56,6 @@ local on_attach = function(client, bufnr)
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, "[W]orkspace [L]ist Folders")
 
-	-- Create a command `:Format` local to the LSP buffer
 	vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
 		vim.lsp.buf.format()
 	end, { desc = "Format current buffer with LSP" })
@@ -87,13 +79,8 @@ local on_attach = function(client, bufnr)
 	end
 end
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
+-- TODO: Configure LSP
 local servers = {
-	-- clangd = {},
 	gopls = {},
 	pyright = {},
 	rust_analyzer = {},
@@ -120,14 +107,11 @@ end
 
 mason.setup()
 
--- Setup neovim lua configuration
+-- Neodev: used as a language server for lua
 require("neodev").setup()
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
--- Ensure the servers above are installed
 
 mason_lspconfig.setup({
 	ensure_installed = vim.tbl_keys(servers),

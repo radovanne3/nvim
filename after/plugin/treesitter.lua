@@ -14,7 +14,6 @@ require("nvim-treesitter.configs").setup({
 		"markdown",
 		"markdown_inline",
 	},
-	-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
 	auto_install = false,
 
 	highlight = { enable = true },
@@ -48,7 +47,6 @@ require("nvim-treesitter.configs").setup({
 			enable = true,
 			lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
 			keymaps = {
-				-- You can use the capture groups defined in textobjects.scm
 				["aa"] = "@parameter.outer",
 				["ia"] = "@parameter.inner",
 				["af"] = "@function.outer",
