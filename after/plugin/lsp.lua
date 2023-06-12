@@ -25,7 +25,7 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- -- borders around floating windows
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
---
+
 -- LSP
 local on_attach = function(client, bufnr)
 	local nmap = function(keys, func, desc)
@@ -105,6 +105,11 @@ if not mason_lspconfig_status then
 	return
 end
 
+local mason_null_ls_status, mason_null_ls = pcall(require, "mason-null-ls")
+if not mason_null_ls_status then
+	return
+end
+
 mason.setup()
 
 -- Neodev: used as a language server for lua
@@ -115,6 +120,17 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 mason_lspconfig.setup({
 	ensure_installed = vim.tbl_keys(servers),
+})
+
+mason_null_ls.setup({
+	ensure_installed = {
+		"zprint",
+		"prettier",
+		"black",
+		"gofmt",
+		"rustfmt",
+		"stylua",
+	},
 })
 
 mason_lspconfig.setup_handlers({
