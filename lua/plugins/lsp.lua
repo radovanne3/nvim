@@ -4,8 +4,10 @@ return {
 	{ "williamboman/mason-lspconfig" },
 	{ "neovim/nvim-lspconfig" },
 	{ "onsails/lspkind.nvim" },
-	{ "j-hui/fidget.nvim",
+	{
+		"j-hui/fidget.nvim",
 		tag = "legacy",
-		opts = {}},
+		opts = {}
+	},
 	{ "folke/neodev.nvim" },
 }
