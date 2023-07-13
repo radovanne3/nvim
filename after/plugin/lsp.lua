@@ -81,7 +81,22 @@ end
 
 -- TODO: Configure LSP
 local servers = {
-	gopls = {},
+	gopls = {
+		cmd = { "gopls" },
+		cmd_env = {
+			GOFLAGS = "-tags=test,e2e_test,integration_test,acceptance_test",
+		},
+		filetypes = { "go", "gomod", "gowork", "gotmpl" },
+		settings = {
+			gopls = {
+				completeUnimported = true,
+				usePlaceholders = true,
+				analyses = {
+					unusedparams = true,
+				},
+			}
+		}
+	},
 	pyright = {},
 	rust_analyzer = {},
 	tsserver = {},
